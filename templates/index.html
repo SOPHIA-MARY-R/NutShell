@@ -1,0 +1,96 @@
+<html>
+<head>
+  <title>NutShell</title>
+    <script  src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+    <style>
+    *{
+      box-sizing: border-box;
+    }
+    marquee{
+      font-family: cursive;
+    }
+    body{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      font-family: monospace;
+      background-image: -webkit-radial-gradient(lightgrey, black);
+    }
+    button{
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 16px;
+      background-color: black;
+      font-family: monospace;
+      font-size: 17px;
+      color: white;
+      display: flex;
+      margin-top: 5px;
+      cursor: pointer;
+      width: 100%;
+      border-radius: 35px;
+    }
+    button:hover{
+      font-size: 19px;
+    }
+    input{
+      padding: 15px;
+      width: 100%;
+      border-radius: 35px;
+      border: 1px solid grey;
+    }
+    input::placeholder{
+      color: black;
+    }
+    #description{
+       background-color: black;
+       align-items: center;
+       text-align: center;
+       color: white;
+       padding: 14px 16px;
+       border-radius: 35px;
+    }
+    main {
+      max-width: 720px;
+      width: 100%;
+    }
+    </style>
+</head>
+<main>
+  <marquee><h1>URL in a NutShell</h1></marquee>
+  <form id="post-form">
+    {% csrf_token %}
+  <input type="text" name="link" id="link" placeholder="Enter URL here">
+  <div class="buttons">
+    <button type="submit" id="shorten">Shorten</button>
+  </div>
+  </form>
+  
+  <div id="description">
+  <p >Shortened URL: </p><section id="section"><h2></h2></section>
+</div>
+    
+</main>
+
+<script type="text/javascript">
+  $(document).on('submit','#post-form',function(e){
+    e.preventDefault();//once user clicks submit, it prevents the page from reloading
+
+    $.ajax({ 
+      //AJAX -> Asynchronous JavaScripts and XML
+      //to update data in database without reloading the page
+      type:'POST',
+      url:'/create',
+      data:{
+        link:$('#link').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(data){
+        $('h2').html("localhost:8000/"+data)
+      }
+    });
+  });
+</script>
+</html>
