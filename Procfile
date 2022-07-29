@@ -1,0 +1,1 @@
+web gunicorn NutShell.wsgi:application --log-file -
